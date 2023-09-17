@@ -1,19 +1,30 @@
 """
-    Description: This is the main module for the program. It handles the windows and display.
+    This is the main module for the program. It handles the windows and display.
 
     Functions:
-        list here
+        set_window_1(screen): This function sets the layout for the first window.
+        make_window2(): This function sets the layout for the second window.
+        main(): This is the main function for the program. It handles the windows and display.
 """
 
 # Import libraries
 import PySimpleGUI as psg
 
 # Import modules
-import logic_processor.input_handler as inputs
+import logic_processor.event_handler as inputs
 
 
 # Functions
 def set_window_1(screen):
+    """
+        This function sets the layout for the first window.
+
+        Parameters:
+            screen (str): The name of the screen to be displayed.
+
+        Returns:
+            window (PySimpleGUI.Window): The window object.
+    """
     layout_welcome = [
         [psg.Column(
             layout=[
@@ -68,6 +79,12 @@ def set_window_1(screen):
 
 
 def make_window2():
+    """
+        This function sets the layout for the second window.
+
+        Returns:
+            window (PySimpleGUI.Window): The window object.
+    """
     layout = [
         [psg.Text('Window 2')],
         [psg.Button('Exit')]
@@ -77,7 +94,7 @@ def make_window2():
 
 def main():
     """
-        Handles the windows event loop and calls the other functions.
+        This is the main function for the program. It handles the windows and display.
     """
     window_1, window_2 = set_window_1('layout_welcome'), None
     active_screen = 1
@@ -98,10 +115,9 @@ def main():
             elif window == window_2:
                 new_active = inputs.window_2_handler(event, values, active_screen)
             # Change screen
-            if new_active != active_screen:
-                window_1[f'-COL{active_screen}-'].update(visible=False)
-                active_screen = new_active
-                window_1[f'-COL{active_screen}-'].update(visible=True)
+            window_1[f'-COL{active_screen}-'].update(visible=False)
+            active_screen = new_active
+            window_1[f'-COL{active_screen}-'].update(visible=True)
     # Close windows on exit
     window_1.close()
     if window_2 is not None:
