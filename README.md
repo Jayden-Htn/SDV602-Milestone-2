@@ -29,3 +29,10 @@ Venv terminal commands:
 - Create new venv: `python -m venv venv`
 - Activate venv: `source venv/Scripts/activate`
 - Exit errors: `exit()`
+
+
+## Code Style
+
+This code is formatted in accordance to the PEP8 and PEP257 style guides.
+
+I have developed my own convention for PySimpleGUI (PSG) keys based on the recommended convention. PSG recommends following the most recent convention of '-BUTTON_1-'. Since I am having multiple screens display off one window and have duplicated button names (e.g. multiple login buttons across pages), I have decied to use the mofiied convention of '-TYPE_PAGE_NAME-', e.g. '-BTN_LOGIN_BACK-'. This will allow me to differentiate between pages. Like how the input convention is to use '-IN_NAME-', adding the type for buttons ('btn') will help to identify between buttons and inputs.
