@@ -7,6 +7,7 @@
         main(): This is the main function for the program. It handles the windows and display.
 """
 
+
 # Import libraries
 import PySimpleGUI as psg
 
@@ -31,9 +32,9 @@ def set_window_1(screen):
                 [psg.VPush()],
                 [psg.Text('Data Explorer', font="Any 12")],
                 [psg.Text('Explore Data Sets Easily', font="Any 12")],
-                [psg.Button('Login', size=(20,1), font="Any 12")],
-                [psg.Button('Register', size=(20,1), font="Any 12")],
-                [psg.Button('Exit', size=(20,1), font="Any 12")],
+                [psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1), font="Any 12")],
+                [psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1), font="Any 12")],
+                [psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1), font="Any 12")],
                 [psg.VPush()]
             ],
             justification='center'
@@ -45,10 +46,10 @@ def set_window_1(screen):
                 [psg.VPush()],
                 [psg.Text('Data Explorer', font="Any 12")],
                 [psg.Text('Login', font="Any 12")],
-                [psg.Input(key="-IN_EMAIL-", font="Any 12")],
-                [psg.Input(key="-IN_PASSWORD-", font="Any 12")],
-                [psg.Button('Login', font="Any 12")],
-                [psg.Button('Back', font="Any 12")],
+                [psg.Text('Email'), psg.Input(key="-IN__LOGIN_EMAIL-", font="Any 12", size=(25,1))],
+                [psg.Text('Password'), psg.Input(key="-IN_LOGIN_PASSWORD-", font="Any 12", size=(25,1))],
+                [psg.Button('Login', key='-BTN_LOGIN_LOGIN-', font="Any 12")],
+                [psg.Button('Back', key='-BTN_LOGIN_BACK-', font="Any 12")],
                 [psg.VPush()]
             ],
             justification='center'
@@ -60,11 +61,11 @@ def set_window_1(screen):
                 [psg.VPush()],
                 [psg.Text('Data Explorer', font="Any 12")],
                 [psg.Text('Register', font="Any 12")],
-                [psg.Input(key="-IN_NAME-", font="Any 12")],
-                [psg.Input(key="-IN_EMAIL-", font="Any 12")],
-                [psg.Input(key="-IN_PASSWORD-", font="Any 12")],
-                [psg.Button('Register', font="Any 12")],
-                [psg.Button('Back', font="Any 12")],
+                [psg.Text('Display Name'), psg.Input(key="-IN_REGISTER_NAME-", font="Any 12", size=(25,1))],
+                [psg.Text('Email'), psg.Input(key="-IN_REGISTER_EMAIL-", font="Any 12", size=(25,1))],
+                [psg.Text('Password'), psg.Input(key="-IN_REGISTER_PASSWORD-", font="Any 12", size=(25,1))],
+                [psg.Button('Register', key='-BTN_REGISTER_REGISTER-', font="Any 12")],
+                [psg.Button('Back', key='-BTN_REGISTER_BACK-', font="Any 12")],
                 [psg.VPush()]
             ],
             justification='center'
@@ -102,18 +103,16 @@ def main():
         # Get events from all active windows
         window, event, values = psg.read_all_windows()
         # Check for closed windows
-        if window == window_1 and event in (psg.WIN_CLOSED, 'Exit'):
+        if window == window_1 and event in (psg.WIN_CLOSED, '-BTN_WELCOME_EXIT-'):
             break
         elif window == window_2 and event in(psg.WIN_CLOSED, 'Exit'):
             window_2.close()
             window_2 = None
         else:
             # Handle event
-            new_active = active_screen
             if window == window_1:
-                new_active = inputs.window_1_handler(event, values, active_screen)
-            elif window == window_2:
-                new_active = inputs.window_2_handler(event, values, active_screen)
+                window_num = 1
+            new_active = inputs.event_processor(event, values, window_num)
             # Change screen
             window_1[f'-COL_{active_screen}-'].update(visible=False)
             active_screen = new_active
