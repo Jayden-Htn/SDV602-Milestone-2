@@ -71,9 +71,9 @@ def set_window_1(screen):
         )]
     ]
     layout = [[
-        psg.Column(layout_welcome, key='-COL1-'), 
-        psg.Column(layout_login, visible=False, key='-COL2-'), 
-        psg.Column(layout_register, visible=False, key='-COL3-')]
+        psg.Column(layout_welcome, key='-COL_WELCOME-'), 
+        psg.Column(layout_login, visible=False, key='-COL_LOGIN-'), 
+        psg.Column(layout_register, visible=False, key='-COL_REGISTER-')]
     ]
     return psg.Window('Data Explorer', layout, size=(700, 400), finalize=True)
 
@@ -97,7 +97,7 @@ def main():
         This is the main function for the program. It handles the windows and display.
     """
     window_1, window_2 = set_window_1('layout_welcome'), None
-    active_screen = 1
+    active_screen = 'WELCOME'
     while True:
         # Get events from all active windows
         window, event, values = psg.read_all_windows()
@@ -115,9 +115,9 @@ def main():
             elif window == window_2:
                 new_active = inputs.window_2_handler(event, values, active_screen)
             # Change screen
-            window_1[f'-COL{active_screen}-'].update(visible=False)
+            window_1[f'-COL_{active_screen}-'].update(visible=False)
             active_screen = new_active
-            window_1[f'-COL{active_screen}-'].update(visible=True)
+            window_1[f'-COL_{active_screen}-'].update(visible=True)
     # Close windows on exit
     window_1.close()
     if window_2 is not None:

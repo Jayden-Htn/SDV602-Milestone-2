@@ -2,9 +2,8 @@
     Description: This file contains the functions that handle the input from the GUI.
 
     Functions:
-        welcome_screen(event, values)
-        login_screen(event, values)
-        register_screen(event, values)
+        get_login_details(values)
+        register_screen(values)
         window_1_handler(event, values, active_screen)
         window_2_handler(event, values, active_screen)
 """ 
@@ -38,24 +37,21 @@ def window_1_handler(event, values, active_screen):
         This function handles the input from the first window.
 
         Parameters:
-            event (str): The event that was triggered.
+            event (str): The event from the window.
             values (dict): The values from the window.
-            active_screen (int): The active screen.
-    
+            active_screen (str): The name of the active screen in uppercase.
     """
     if event in ('Back', 'Back4'):
-        return 1
-    if active_screen == 1:
-        if event == 'Login':
-            return 2
-        elif event == 'Register':
-            return 3
-    elif active_screen == 2:
+        return 'WELCOME'
+    if active_screen == 'WELCOME':
+        return event.upper()
+    elif active_screen == 'LOGIN':
         if event == 'Login':
             get_login_details(values)
-    elif active_screen == 3:
+    elif active_screen == 'REGISTER':
         if event == 'Register':
             register_screen(values)
+
 
 def window_2_handler(event, values, active_screen):
     pass
