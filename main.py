@@ -93,11 +93,24 @@ def make_window2():
     return psg.Window('Window 2', layout, finalize=True)
 
 
+def set_theme():
+    """
+        This function sets the default theme for the program.
+    """
+    psg.SetOptions(background_color='#95D0B3', 
+       text_element_background_color='#95D0B3',
+       text_color="#2D6A4F",
+       element_background_color='#D0E9DD',
+       input_elements_background_color='#F7F3EC',
+       button_color=('white','#2D6A4F'))
+
+
 def main():
     """
         This is the main function for the program. It handles the windows and display.
     """
-    window_1, window_2 = set_window_1('layout_welcome'), None
+    set_theme()
+    window_1, window_2 = set_window_1(), None
     active_screen = 'WELCOME'
     while True:
         # Get events from all active windows
