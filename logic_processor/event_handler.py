@@ -25,13 +25,13 @@ def validate_login(values):
             screen (str): The screen to go to.
     """
     # Get the values from the window
-    email = values["-IN_EMAIL-"].lower()
-    password = values["-IN_PASSWORD-"].lower()
+    email = values["-IN_LOGIN_EMAIL-"].lower()
+    password = values["-IN_LOGIN_PASSWORD-"].lower()
     # Check if the account exists
     response = accounts.check_for_account(email, password)
     # Return the screen to go to
-    if response[0]:
-        return ('HOME', response[1]) # includes display name
+    if response:
+        return 'HOME'
     return 'LOGIN'
 
 
@@ -42,9 +42,13 @@ def register_screen(values):
         Parameters:
             values (dict): The values from the window.
     """
-    username = values["-IN_NAME-"].lower()
-    email = values["-IN_EMAIL-"].lower()
-    password = values["-IN_PASSWORD-"].lower()
+    username = values["-IN_REGISTER_NAME-"].lower()
+    email = values["-IN_REGISTER_EMAIL-"].lower()
+    password = values["-IN_REGISTER_PASSWORD-"].lower()
+    if accounts.check_for_email(email):
+        return 'REGISTER'
+    accounts.add_account(username, email, password)
+    return 'HOME'
 
 
 def window_1_handler(event, values):
@@ -68,7 +72,20 @@ def window_1_handler(event, values):
         return validate_login(values)
     # Register page
     if event == '-BTN_REGISTER_REGISTER-':
-        result = register_screen(values)     
+        return register_screen(values)   
+
+
+def get_display_name(email):
+    """
+        This function gets the display name of the account.
+
+        Parameters:
+            email (str): The email of the account.
+
+        Returns:
+            display_name (str): The display name of the account.
+    """
+    return accounts.get_display_name(email)
 
 
 def window_2_handler(event, values):

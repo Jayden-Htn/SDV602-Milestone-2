@@ -27,8 +27,8 @@ def check_for_account(email, password):
     data = files.read_csv_file()
     for account in data:
         if account[1] == email and account[2] == password:
-            return (True, account[0])
-    return (False, None)
+            return True
+    return False
 
 
 def check_for_email(email):
@@ -39,13 +39,30 @@ def check_for_email(email):
             email (str): The email of the account.
 
         Returns:
-            Exists (bool): If the email exists or not.
+            Exists (bool): Returns true if the email exists, false otherwise.
     """
     data = files.read_csv_file()
     for account in data:
         if account[1] == email:
             return True
     return False
+
+
+def get_display_name(email):
+    """
+        This function gets the display name of the account.
+
+        Parameters:
+            email (str): The email of the account.
+
+        Returns:
+            display_name (str): The display name of the account.
+    """
+    data = files.read_csv_file()
+    for account in data:
+        if account[1] == email:
+            return account[0]
+    return None
 
 
 def add_account(name, email, password):

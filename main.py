@@ -43,7 +43,7 @@ def set_window_1():
                 [psg.VPush()],
                 [psg.Text('Data Explorer', font="Any 12")],
                 [psg.Text('Login', font="Any 12")],
-                [psg.Text('Email'), psg.Input(key="-IN__LOGIN_EMAIL-", font="Any 12", size=(25,1))],
+                [psg.Text('Email'), psg.Input(key="-IN_LOGIN_EMAIL-", font="Any 12", size=(25,1))],
                 [psg.Text('Password'), psg.Input(key="-IN_LOGIN_PASSWORD-", font="Any 12", size=(25,1))],
                 [psg.Button('Login', key='-BTN_LOGIN_LOGIN-', font="Any 12")],
                 [psg.Button('Back', key='-BTN_LOGIN_BACK-', font="Any 12")],
@@ -68,6 +68,21 @@ def set_window_1():
             justification='center'
         )]
     ]
+    layout_home = [
+        [psg.Column(
+            layout=[
+                [psg.VPush()],
+                [psg.Text('Data Explorer', font="Any 12")],
+                [psg.Text('Home', font="Any 12")],
+                [psg.Button('DES 1', key='-BTN_HOME_DES1-', font="Any 12")],
+                [psg.Button('DES 2', key='-BTN_HOME_DES2-', font="Any 12")],
+                [psg.Button('DES 3', key='-BTN_HOME_DES3-', font="Any 12")],
+                [psg.Button('Exit', key='-BTN_HOME_EXIT-', font="Any 12")],
+                [psg.VPush()]
+            ],
+            justification='center'
+        )]
+    ]
 
     test_layout_1 = [[psg.Text('', font="Any 12")]]
     test_layout_2 = [[psg.Text('', font="Any 12")]]
@@ -76,8 +91,8 @@ def set_window_1():
         psg.Column(layout_welcome, key='-COL_WELCOME-'), 
         psg.Column(layout_login, visible=False, key='-COL_LOGIN-'), 
         psg.Column(layout_register, visible=False, key='-COL_REGISTER-'),
+        psg.Column(layout_home, visible=False, key='-COL_HOME-'),
         psg.Column( test_layout_2,size=(200, 400))
-        
     ]]
     return psg.Window('Data Explorer', layout, size=(700, 400), finalize=True)
 
@@ -115,11 +130,12 @@ def main():
     set_theme()
     window_1, window_2 = set_window_1(), None
     active_screen = 'WELCOME'
+    username = None
     while True:
         # Get events from all active windows
         window, event, values = psg.read_all_windows()
         # Check for closed windows
-        if window == window_1 and event in (psg.WIN_CLOSED, '-BTN_WELCOME_EXIT-'):
+        if window == window_1 and event in (psg.WIN_CLOSED, '-BTN_WELCOME_EXIT-', '-BTN_HOME_EXIT-'):
             break
         elif window == window_2 and event in(psg.WIN_CLOSED, 'Exit'):
             window_2.close()
@@ -129,6 +145,8 @@ def main():
             if window == window_1:
                 window_num = 1
             new_active = inputs.event_processor(event, values, window_num)
+            if new_active == 'HOME' and username == None:
+                username = inputs.get_display_name(values["-IN_LOGIN_EMAIL-"])
             # Change screen
             window_1[f'-COL_{active_screen}-'].update(visible=False)
             active_screen = new_active
