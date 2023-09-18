@@ -29,9 +29,9 @@ def set_window_1():
                 [psg.VPush()],
                 [psg.Push(), psg.Text('Data Explorer', font="Any 28"), psg.Push()],
                 [psg.Push(), psg.Text('Explore Data Sets Easily', font="Any 12", pad=(0,(0,20))), psg.Push()],
-                [psg.Push(), psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1), font="Any 12"), psg.Push()],
-                [psg.Push(), psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1), font="Any 12"), psg.Push()],
-                [psg.Push(), psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1), font="Any 12"), psg.Push()],
+                [psg.Push(), psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1)), psg.Push()],
+                [psg.Push(), psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1)), psg.Push()],
+                [psg.Push(), psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1)), psg.Push()],
                 [psg.VPush()]
             ],
             justification='center'
@@ -41,12 +41,12 @@ def set_window_1():
         [psg.Column(
             layout=[
                 [psg.VPush()],
-                [psg.Text('Data Explorer', font="Any 12")],
-                [psg.Text('Login', font="Any 12")],
-                [psg.Text('Email'), psg.Input(key="-IN_LOGIN_EMAIL-", font="Any 12", size=(25,1))],
-                [psg.Text('Password'), psg.Input(key="-IN_LOGIN_PASSWORD-", font="Any 12", size=(25,1))],
-                [psg.Button('Login', key='-BTN_LOGIN_LOGIN-', font="Any 12")],
-                [psg.Button('Back', key='-BTN_LOGIN_BACK-', font="Any 12")],
+                [psg.Text('Data Explorer', font="Any 28")],
+                [psg.Text('Login', font="Any 18")],
+                [psg.Text('Email'), psg.Input(key="-IN_LOGIN_EMAIL-", size=(25,1))],
+                [psg.Text('Password'), psg.Input(key="-IN_LOGIN_PASSWORD-", size=(25,1))],
+                [psg.Button('Login', key='-BTN_LOGIN_LOGIN-')],
+                [psg.Button('Back', key='-BTN_LOGIN_BACK-')],
                 [psg.VPush()]
             ],
             justification='center',
@@ -56,13 +56,13 @@ def set_window_1():
         [psg.Column(
             layout=[
                 [psg.VPush()],
-                [psg.Text('Data Explorer', font="Any 12")],
-                [psg.Text('Register', font="Any 12")],
-                [psg.Text('Display Name'), psg.Input(key="-IN_REGISTER_NAME-", font="Any 12", size=(25,1))],
-                [psg.Text('Email'), psg.Input(key="-IN_REGISTER_EMAIL-", font="Any 12", size=(25,1))],
-                [psg.Text('Password'), psg.Input(key="-IN_REGISTER_PASSWORD-", font="Any 12", size=(25,1))],
-                [psg.Button('Register', key='-BTN_REGISTER_REGISTER-', font="Any 12")],
-                [psg.Button('Back', key='-BTN_REGISTER_BACK-', font="Any 12")],
+                [psg.Text('Data Explorer', font="Any 28")],
+                [psg.Text('Register', font="Any 18")],
+                [psg.Text('Display Name'), psg.Input(key="-IN_REGISTER_NAME-", size=(25,1))],
+                [psg.Text('Email'), psg.Input(key="-IN_REGISTER_EMAIL-", size=(25,1))],
+                [psg.Text('Password'), psg.Input(key="-IN_REGISTER_PASSWORD-", size=(25,1))],
+                [psg.Button('Register', key='-BTN_REGISTER_REGISTER-')],
+                [psg.Button('Back', key='-BTN_REGISTER_BACK-')],
                 [psg.VPush()]
             ],
             justification='center'
@@ -73,26 +73,24 @@ def set_window_1():
             layout=[
                 [psg.VPush()],
                 [psg.Text('Data Explorer', font="Any 12")],
-                [psg.Text('Home', font="Any 12")],
-                [psg.Button('DES 1', key='-BTN_HOME_DES1-', font="Any 12")],
-                [psg.Button('DES 2', key='-BTN_HOME_DES2-', font="Any 12")],
-                [psg.Button('DES 3', key='-BTN_HOME_DES3-', font="Any 12")],
-                [psg.Button('Exit', key='-BTN_HOME_EXIT-', font="Any 12")],
+                [psg.Text('Home', font="Any 18")],
+                [psg.Button('DES 1', key='-BTN_HOME_DES1-')],
+                [psg.Button('DES 2', key='-BTN_HOME_DES2-')],
+                [psg.Button('DES 3', key='-BTN_HOME_DES3-')],
+                [psg.Button('Exit', key='-BTN_HOME_EXIT-')],
                 [psg.VPush()]
             ],
             justification='center'
         )]
     ]
 
-    test_layout_1 = [[psg.Text('', font="Any 12")]]
-    test_layout_2 = [[psg.Text('', font="Any 12")]]
+    test_layout_1 = [[psg.Text('')]]
     layout = [[
-        psg.Column( test_layout_1,size=(200, 400)),
+        psg.Column(test_layout_1, size=(190, 400)),
         psg.Column(layout_welcome, key='-COL_WELCOME-'), 
         psg.Column(layout_login, visible=False, key='-COL_LOGIN-'), 
         psg.Column(layout_register, visible=False, key='-COL_REGISTER-'),
-        psg.Column(layout_home, visible=False, key='-COL_HOME-'),
-        psg.Column( test_layout_2,size=(200, 400))
+        psg.Column(layout_home, visible=False, key='-COL_HOME-')
     ]]
     return psg.Window('Data Explorer', layout, size=(700, 400), finalize=True)
 
@@ -118,6 +116,7 @@ def set_theme():
     psg.SetOptions(background_color='#95D0B3', 
        text_element_background_color='#95D0B3',
        text_color="#2D6A4F",
+       font='Any 12',
        element_background_color='#D0E9DD',
        input_elements_background_color='#F7F3EC',
        button_color=('white','#2D6A4F'))
