@@ -16,7 +16,7 @@ import logic_processor.event_handler as inputs
 
 
 # Functions
-def set_window_1():
+def set_window_1(new_screen='WELCOME'):
     """
         This function sets the layout for the first window.
 
@@ -71,14 +71,25 @@ def set_window_1():
 
     test_layout_1 = [[psg.Text('', font="Any 12")]]
     test_layout_2 = [[psg.Text('', font="Any 12")]]
-    layout = [[
+    layout_1 = [[
         psg.Column( test_layout_1,size=(200, 400)),
         psg.Column(layout_welcome, key='-COL_WELCOME-'), 
-        psg.Column(layout_login, visible=False, key='-COL_LOGIN-'), 
-        psg.Column(layout_register, visible=False, key='-COL_REGISTER-'),
         psg.Column( test_layout_2,size=(200, 400))
         
     ]]
+    test_layout_3 = [[psg.Text('', font="Any 12")]]
+    test_layout_4 = [[psg.Text('', font="Any 12")]]
+    layout_2 = [[
+        psg.Column( test_layout_3,size=(200, 400)),
+        psg.Column(layout_login, key='-COL_LOGIN-'), 
+        psg.Column( test_layout_4,size=(200, 400))
+        
+    ]]
+    # psg.Column(layout_register, visible=False, key='-COL_REGISTER-'),
+    if new_screen == 'WELCOME':
+        layout = layout_1
+    else:
+        layout = layout_2
     return psg.Window('Data Explorer', layout, size=(700, 400), finalize=True)
 
 
@@ -130,9 +141,7 @@ def main():
                 window_num = 1
             new_active = inputs.event_processor(event, values, window_num)
             # Change screen
-            window_1[f'-COL_{active_screen}-'].update(visible=False)
-            active_screen = new_active
-            window_1[f'-COL_{active_screen}-'].update(visible=True)
+            window_1 = switch_screen(window_1, active_screen, new_active)
     # Close windows on exit
     window_1.close()
     if window_2 is not None:
