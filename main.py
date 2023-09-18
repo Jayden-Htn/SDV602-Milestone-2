@@ -16,12 +16,9 @@ import logic_processor.event_handler as inputs
 
 
 # Functions
-def set_window_1(screen):
+def set_window_1():
     """
         This function sets the layout for the first window.
-
-        Parameters:
-            screen (str): The name of the screen to be displayed.
 
         Returns:
             window (PySimpleGUI.Window): The window object.
@@ -30,11 +27,11 @@ def set_window_1(screen):
         [psg.Column(
             layout=[
                 [psg.VPush()],
-                [psg.Text('Data Explorer', font="Any 12")],
-                [psg.Text('Explore Data Sets Easily', font="Any 12")],
-                [psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1), font="Any 12")],
-                [psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1), font="Any 12")],
-                [psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1), font="Any 12")],
+                [psg.Push(), psg.Text('Data Explorer', font="Any 28"), psg.Push()],
+                [psg.Push(), psg.Text('Explore Data Sets Easily', font="Any 12", pad=(0,(0,20))), psg.Push()],
+                [psg.Push(), psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1), font="Any 12"), psg.Push()],
+                [psg.Push(), psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1), font="Any 12"), psg.Push()],
+                [psg.Push(), psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1), font="Any 12"), psg.Push()],
                 [psg.VPush()]
             ],
             justification='center'
@@ -52,7 +49,7 @@ def set_window_1(screen):
                 [psg.Button('Back', key='-BTN_LOGIN_BACK-', font="Any 12")],
                 [psg.VPush()]
             ],
-            justification='center'
+            justification='center',
         )]
     ]
     layout_register = [
@@ -71,11 +68,17 @@ def set_window_1(screen):
             justification='center'
         )]
     ]
+
+    test_layout_1 = [[psg.Text('', font="Any 12")]]
+    test_layout_2 = [[psg.Text('', font="Any 12")]]
     layout = [[
+        psg.Column( test_layout_1,size=(200, 400)),
         psg.Column(layout_welcome, key='-COL_WELCOME-'), 
         psg.Column(layout_login, visible=False, key='-COL_LOGIN-'), 
-        psg.Column(layout_register, visible=False, key='-COL_REGISTER-')]
-    ]
+        psg.Column(layout_register, visible=False, key='-COL_REGISTER-'),
+        psg.Column( test_layout_2,size=(200, 400))
+        
+    ]]
     return psg.Window('Data Explorer', layout, size=(700, 400), finalize=True)
 
 
