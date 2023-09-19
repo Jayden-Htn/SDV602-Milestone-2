@@ -26,71 +26,64 @@ def set_window_1():
     layout_welcome = [
         [psg.Column(
             layout=[
-                [psg.VPush()],
-                [psg.Push(), psg.Text('Data Explorer', font="Any 28"), psg.Push()],
-                [psg.Push(), psg.Text('Explore Data Sets Easily', font="Any 12", pad=(0,(0,20))), psg.Push()],
-                [psg.Push(), psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1)), psg.Push()],
-                [psg.Push(), psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1)), psg.Push()],
-                [psg.Push(), psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1)), psg.Push()],
-                [psg.VPush()]
+                [psg.Text('Data Scout: Data Set Explorer', font="Any 28", size=(700,1), justification='center')],
+                [psg.Text('Explore large data sets with ease', font="Any 16", pad=(0,(0,20)))],
+                [psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1))],
+                [psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1))],
+                [psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1))],
             ],
-            justification='center'
+            element_justification='center'
         )]
     ]
     layout_login = [
         [psg.Column(
             layout=[
-                [psg.VPush()],
-                [psg.Text('Data Explorer', font="Any 28")],
-                [psg.Text('Login', font="Any 18")],
-                [psg.Text('Email'), psg.Input(key="-IN_LOGIN_EMAIL-", size=(25,1))],
-                [psg.Text('Password'), psg.Input(key="-IN_LOGIN_PASSWORD-", size=(25,1))],
-                [psg.Button('Login', key='-BTN_LOGIN_LOGIN-')],
-                [psg.Button('Back', key='-BTN_LOGIN_BACK-')],
-                [psg.VPush()]
+                [psg.Text('Data Scout: Data Set Explorer', font="Any 28", size=(700,1), justification='center')],
+                [psg.Text('Login', font="Any 18", justification='right', pad=(0,(0,20)))],
+                [psg.Text('Email', size=(8,1), justification='right'), psg.Input(key="-IN_LOGIN_EMAIL-", size=(25,1))],
+                [psg.Text('Password', size=(8,1), justification='right'), psg.Input(key="-IN_LOGIN_PASSWORD-", size=(25,1))],
+                [psg.Button('Login', key='-BTN_LOGIN_LOGIN-', size=(15,1), pad=(0,(20,0)))],
+                [psg.Button('Back', key='-BTN_LOGIN_BACK-', size=(15,1))],
             ],
-            justification='center',
+            element_justification='center'
         )]
     ]
     layout_register = [
         [psg.Column(
             layout=[
-                [psg.VPush()],
-                [psg.Text('Data Explorer', font="Any 28")],
-                [psg.Text('Register', font="Any 18")],
-                [psg.Text('Display Name'), psg.Input(key="-IN_REGISTER_NAME-", size=(25,1))],
-                [psg.Text('Email'), psg.Input(key="-IN_REGISTER_EMAIL-", size=(25,1))],
-                [psg.Text('Password'), psg.Input(key="-IN_REGISTER_PASSWORD-", size=(25,1))],
-                [psg.Button('Register', key='-BTN_REGISTER_REGISTER-')],
-                [psg.Button('Back', key='-BTN_REGISTER_BACK-')],
-                [psg.VPush()]
+                [psg.Text('Data Scout: Data Set Explorer', font="Any 28", size=(700,1), justification='center')],
+                [psg.Text('Register', font="Any 18", pad=(0,(0,20)))],
+                [psg.Text('Username', size=(8,1), justification='right'), psg.Input(key="-IN_REGISTER_NAME-", size=(25,1))],
+                [psg.Text('Email', size=(8,1), justification='right'), psg.Input(key="-IN_REGISTER_EMAIL-", size=(25,1))],
+                [psg.Text('Password', size=(8,1), justification='right'), psg.Input(key="-IN_REGISTER_PASSWORD-", size=(25,1))],
+                [psg.Button('Register', key='-BTN_REGISTER_REGISTER-', size=(15,1), pad=(0,(20,0)))],
+                [psg.Button('Back', key='-BTN_REGISTER_BACK-', size=(15,1))],
             ],
-            justification='center'
+            element_justification='center'
         )]
     ]
     layout_home = [
         [psg.Column(
             layout=[
-                [psg.VPush()],
-                [psg.Text('Data Explorer', font="Any 12")],
-                [psg.Text('Home', font="Any 18")],
-                [psg.Button('DES 1', key='-BTN_HOME_DES1-')],
-                [psg.Button('DES 2', key='-BTN_HOME_DES2-')],
-                [psg.Button('DES 3', key='-BTN_HOME_DES3-')],
-                [psg.Button('Exit', key='-BTN_HOME_EXIT-')],
-                [psg.VPush()]
+                [psg.Text('Data Scout: Data Set Explorer', font="Any 28", size=(700,1), justification='center')],
+                [psg.Text('Welcome User', font="Any 18", key='-TXT_HOME_WELCOME-', pad=(0,(0,40)))],
+                [psg.Button('DES 1', key='-BTN_HOME_DES1-', size=(15,1))],
+                [psg.Button('DES 2', key='-BTN_HOME_DES2-', size=(15,1))],
+                [psg.Button('DES 3', key='-BTN_HOME_DES3-', size=(15,1))],
+                [psg.Button('Exit', key='-BTN_HOME_EXIT-', size=(15,1))],
             ],
-            justification='center'
+            element_justification='center'
         )]
     ]
 
     test_layout_1 = [[psg.Text('')]]
     layout = [[
-        psg.Column(test_layout_1, size=(190, 400)),
+        psg.VPush(),
         psg.Column(layout_welcome, key='-COL_WELCOME-'), 
         psg.Column(layout_login, visible=False, key='-COL_LOGIN-'), 
         psg.Column(layout_register, visible=False, key='-COL_REGISTER-'),
-        psg.Column(layout_home, visible=False, key='-COL_HOME-')
+        psg.Column(layout_home, visible=False, key='-COL_HOME-'),
+        psg.VPush()
     ]]
     return psg.Window('Data Explorer', layout, size=(700, 400), finalize=True)
 
