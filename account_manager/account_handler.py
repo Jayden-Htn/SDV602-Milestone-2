@@ -13,9 +13,9 @@ import account_manager.file_handler as files
 
 
 # Functions
-def check_for_account(email, password):
+def verify_correct_account(email, password):
     """
-        This function checks if the account exists.
+        This function checks if the account exists with the correct password.
 
         Parameters:
             email (str): The email of the account.
@@ -31,19 +31,26 @@ def check_for_account(email, password):
     return False
 
 
-def check_for_email(email):
+def check_for_item(item, item_type):
     """
-        This function checks if the email exists.
+        This function checks if the item exists in the csv file (e.g. username, email).
 
         Parameters:
-            email (str): The email of the account.
+            item (str): The item to be checked.
+            item_type (str): The type of item to be checked.
 
         Returns:
-            Exists (bool): Returns true if the email exists, false otherwise.
+            Exists (bool): Returns true if the item exists, false otherwise.
     """
     data = files.read_csv_file()
+    if item_type == 'name':
+        col = 0
+    elif item_type == 'email':
+        col = 1
+    else:
+        col = 2
     for account in data:
-        if account[1] == email:
+        if account[col] == item:
             return True
     return False
 

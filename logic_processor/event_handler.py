@@ -13,6 +13,11 @@
 import account_manager.account_handler as accounts
 
 
+# Global variables
+global username
+username = None
+
+
 # Functions
 def validate_login(values):
     """
@@ -26,9 +31,9 @@ def validate_login(values):
     """
     # Get the values from the window
     email = values["-IN_LOGIN_EMAIL-"].lower()
-    password = values["-IN_LOGIN_PASSWORD-"].lower()
+    password = values["-IN_LOGIN_PASSWORD-"]
     # Check if the account exists
-    response = accounts.check_for_account(email, password)
+    response = accounts.verify_correct_account(email, password)
     # Return the screen to go to
     if response:
         return 'HOME'
@@ -42,10 +47,12 @@ def register_screen(values):
         Parameters:
             values (dict): The values from the window.
     """
-    username = values["-IN_REGISTER_NAME-"].lower()
+    username = values["-IN_REGISTER_NAME-"]
     email = values["-IN_REGISTER_EMAIL-"].lower()
-    password = values["-IN_REGISTER_PASSWORD-"].lower()
-    if accounts.check_for_email(email):
+    password = values["-IN_REGISTER_PASSWORD-"]
+    if accounts.check_for_item(username, 'name'):
+        return 'REGISTER'
+    if accounts.check_for_item(email, 'email'):
         return 'REGISTER'
     accounts.add_account(username, email, password)
     return 'HOME'
@@ -59,6 +66,7 @@ def window_1_handler(event, values):
             event (str): The event from the window.
             values (dict): The values from the window.
     """
+    global username
     # Back buttons
     if event in ('-BTN_LOGIN_BACK-', '-BTN_REGISTER_BACK-'):
         return 'WELCOME'
@@ -69,13 +77,19 @@ def window_1_handler(event, values):
         return 'REGISTER'
     # Login page
     if event == '-BTN_LOGIN_LOGIN-':
-        return validate_login(values)
+        validation = validate_login(values)
     # Register page
     if event == '-BTN_REGISTER_REGISTER-':
-        return register_screen(values)   
+        validation = register_screen(values)   
+    if validation == 'HOME':
+        email = values["-IN_LOGIN_EMAIL-"].lower()
+        if email == '':
+            email = values["-IN_REGISTER_EMAIL-"].lower()
+        username = accounts.get_display_name(email)
+    return validation
 
 
-def get_display_name(email):
+def get_display_name():
     """
         This function gets the display name of the account.
 
@@ -85,7 +99,8 @@ def get_display_name(email):
         Returns:
             display_name (str): The display name of the account.
     """
-    return accounts.get_display_name(email)
+    global username
+    return username
 
 
 def window_2_handler(event, values):

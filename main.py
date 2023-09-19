@@ -12,7 +12,7 @@
 import PySimpleGUI as psg
 
 # Import modules
-import logic_processor.event_handler as inputs
+import logic_processor.event_handler as events
 
 
 # Functions
@@ -136,13 +136,16 @@ def main():
             # Handle event
             if window == window_1:
                 window_num = 1
-            new_active = inputs.event_processor(event, values, window_num)
+            new_active = events.event_processor(event, values, window_num)
             if new_active == 'HOME' and username == None:
-                username = inputs.get_display_name(values["-IN_LOGIN_EMAIL-"])
+                username = events.get_display_name()
             # Change screen
             window_1[f'-COL_{active_screen}-'].update(visible=False)
             active_screen = new_active
             window_1[f'-COL_{active_screen}-'].update(visible=True)
+            # Add username to home screen
+            if active_screen == 'HOME':
+                window_1['-TXT_HOME_WELCOME-'].update(f'Welcome {username}!')
     # Close windows on exit
     window_1.close()
     if window_2 is not None:
