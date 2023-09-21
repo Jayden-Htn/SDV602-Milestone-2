@@ -5,11 +5,16 @@
         check_for_account(email, password): This function checks if the account exists.
         check_for_email(email): This function checks if the email exists.
         add_account(name, email, password): This function adds an account to the csv file.
+        get_account_names(): This function gets the names of the accounts.
 """
 
 
 # Import modules
 import account_manager.file_handler as files
+
+# Global variables
+global username
+username = None
 
 
 # Functions
@@ -24,9 +29,11 @@ def verify_correct_account(email, password):
         Returns:
             Exists (bool): If the account exists or not.
     """
+    global username
     data = files.read_csv_file()
     for account in data:
         if account[1] == email and account[2] == password:
+            username = account[0]
             return True
     return False
 
@@ -55,21 +62,15 @@ def check_for_item(item, item_type):
     return False
 
 
-def get_display_name(email):
+def get_display_name():
     """
         This function gets the display name of the account.
-
-        Parameters:
-            email (str): The email of the account.
 
         Returns:
             display_name (str): The display name of the account.
     """
-    data = files.read_csv_file()
-    for account in data:
-        if account[1] == email:
-            return account[0]
-    return None
+    global username
+    return username
 
 
 def add_account(name, email, password):
@@ -81,6 +82,22 @@ def add_account(name, email, password):
             email (str): The email of the account.
             password (str): The password of the account.
     """
+    global username
     data = files.read_csv_file()
     data.append([name, email, password])
     files.write_csv_file(data)
+    username = name
+
+
+def get_account_names():
+    """
+        This function gets the names of the accounts.
+
+        Returns:
+            names (list): The names of the accounts.
+    """
+    data = files.read_csv_file()
+    names = []
+    for account in data:
+        names.append(account[0])
+    return names

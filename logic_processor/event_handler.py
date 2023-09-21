@@ -1,22 +1,18 @@
 """
-    Description: This file contains the functions that handle the input from the GUI.
+    Description: This file contains the functions that handle the events from GUI inputs.
 
     Functions:
-        get_login_details(values)
-        register_screen(values)
-        window_1_handler(event, values, active_screen)
-        window_2_handler(event, values, active_screen)
+        get_login_details(values): This function gets the login details from the login form.
+        register_screen(values): This function gets the register details from the registration form.
+        window_1_handler(event, values, active_screen): This function handles the input from the first window.
+        window_2_handler(event, values, active_screen): This function handles the input from the second window.
+        event_processor(event, values, active_screen): This function processes the events from the window and passes to specifc handler.
 """ 
 
 
 # Import modules
 import account_manager.account_handler as accounts
 import main as ui
-
-
-# Global variables
-global username
-username = None
 
 
 # Functions
@@ -59,20 +55,6 @@ def register_screen(values):
     return 'HOME'
 
 
-def get_display_name():
-    """
-        This function gets the display name of the account.
-
-        Parameters:
-            email (str): The email of the account.
-
-        Returns:
-            display_name (str): The display name of the account.
-    """
-    global username
-    return username
-
-
 def window_1_handler(event, values):
     """
         This function handles the input from the first window.
@@ -81,7 +63,6 @@ def window_1_handler(event, values):
             event (str): The event from the window.
             values (dict): The values from the window.
     """
-    global username
     # Back buttons
     if event in ('-BTN_LOGIN_BACK-', '-BTN_REGISTER_BACK-'):
         return 'WELCOME'
@@ -92,16 +73,10 @@ def window_1_handler(event, values):
         return 'REGISTER'
     # Login page
     if event == '-BTN_LOGIN_LOGIN-':
-        validation = validate_login(values)
-        if validation == 'HOME':
-            username = accounts.get_display_name(values["-IN_LOGIN_EMAIL-"].lower())
-        return validation
+        return validate_login(values)
     # Register page
     if event == '-BTN_REGISTER_REGISTER-':
-        validation = register_screen(values)  
-        if validation == 'HOME':
-            username = accounts.get_display_name(values["-IN_REGISTER_EMAIL-"].lower())
-        return validation
+        return register_screen(values)  
     # Home page
     if event == '-BTN_HOME_DES1-':
         return 'Create DES Window'
@@ -114,6 +89,17 @@ def window_2_handler(event, values):
 
 
 def event_processor(event, values, window):
+    """
+        This function processes the events from the window.
+
+        Parameters:
+            event (str): The event from the window.
+            values (dict): The values from the window.
+            window (int): The window to process the event for.
+
+        Returns:
+            screen (str): The screen to go to.
+    """
     if window == 1:
         return window_1_handler(event, values)
     else:
