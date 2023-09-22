@@ -25,9 +25,11 @@ def read_csv_file():
             data (list): The data from the csv file.
     """
     global file_path
+
+    # Read the csv file
     with open(file_path) as f:
         data = list(csv.reader(f))
-    data.pop(0)
+    data.pop(0) # Remove the header
     return data
 
 
@@ -39,9 +41,11 @@ def write_csv_file(data):
             data (list): The data to be written to the csv file.
     """
     global filepath
+
+    # Write the data to the csv file
     with open(file_path, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['Name', 'Email', 'Password'])
+        writer.writerow(['Name', 'Email', 'Password']) # Add the header
         writer.writerows(data)
 
 

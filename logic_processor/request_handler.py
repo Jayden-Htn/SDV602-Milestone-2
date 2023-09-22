@@ -20,6 +20,9 @@ def get_other_names(username):
         Returns:
             names (list): The names of the other accounts.
     """
+    # Get the names of the accounts
     names = accounts.get_account_names()
+    
+    # Remove the active account as it is displayed separately from the other accounts
     names.remove(username)
     return names

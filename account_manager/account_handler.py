@@ -31,10 +31,14 @@ def verify_correct_account(email, password):
             Exists (bool): If the account exists or not.
     """
     global username
+
+    # Retrieve the data from the csv file
     data = files.read_csv_file()
+    
+    # Check if the account exists
     for account in data:
         if account[1] == email and account[2] == password:
-            username = account[0]
+            username = account[0] # Set the username of the active account
             return True
     return False
 
@@ -50,15 +54,20 @@ def check_for_item(item, item_type):
         Returns:
             Exists (bool): Returns true if the item exists, false otherwise.
     """
+    # Retrieve the data from the csv file
     data = files.read_csv_file()
+
+    # Identify the column to check
     if item_type == 'name':
         col = 0
     elif item_type == 'email':
         col = 1
     else:
         col = 2
+
+    # Check if the item exists
     for account in data:
-        if account[col] == item:
+        if account[col].lower() == item.lower():
             return True
     return False
 
@@ -84,6 +93,7 @@ def add_account(name, email, password):
             password (str): The password of the account.
     """
     global username
+    
     data = files.read_csv_file()
     data.append([name, email, password])
     files.write_csv_file(data)
@@ -98,7 +108,5 @@ def get_account_names():
             names (list): The names of the accounts.
     """
     data = files.read_csv_file()
-    names = []
-    for account in data:
-        names.append(account[0])
+    names = [account[0] for account in data]
     return names

@@ -2,9 +2,11 @@
     This is the main module for the program. It handles the windows and display.
 
     Functions:
-        set_window_1(screen): This function sets the layout for the first window.
-        make_window2(): This function sets the layout for the second window.
-        main(): This is the main function for the program. It handles the windows and display.
+        set_window_1(): This function sets the layout for the first window.
+        make_my_des_window(): This function sets the layout for the user's personal DES window.
+        make_des_window(user): This function sets the layout for each other DES window.
+        set_theme(): This function sets the default PySimpleGUI theme for the program.
+        update_des_list(window, username): This function updates the list of other DES screens.
 """
 
 
@@ -24,6 +26,7 @@ def set_window_1():
         Returns:
             window (PySimpleGUI.Window): The window object.
     """
+    # Layout for the welcome screen
     layout_welcome = [
         [psg.Column(
             layout=[
@@ -36,6 +39,7 @@ def set_window_1():
             element_justification='center'
         )]
     ]
+    # Layout for the login screen
     layout_login = [
         [psg.Column(
             layout=[
@@ -49,6 +53,7 @@ def set_window_1():
             element_justification='center'
         )]
     ]
+    # Layout for the register screen
     layout_register = [
         [psg.Column(
             layout=[
@@ -63,10 +68,11 @@ def set_window_1():
             element_justification='center'
         )]
     ]
+    # Scrollable container for other user's DES buttons
     des_container = [
         [psg.Column([], key='-DES_COL-', scrollable=True, vertical_scroll_only=True, size=(180, 120))]
     ]
-    
+    # Layout for the home screen
     layout_home = [
         [psg.Column(
             layout=[
@@ -79,6 +85,8 @@ def set_window_1():
             element_justification='center'
         )]
     ]
+    # Full layout for the window, includes all possible screens
+    # Navigation between screens is handled by changing the visibility of the columns
     layout = [[
         psg.VPush(),
         psg.Column(layout_welcome, key='-COL_WELCOME-'), 
@@ -92,13 +100,15 @@ def set_window_1():
 
 def make_my_des_window():
     """
-        This function sets the layout for each DES window.
+        This function sets the layout for the user's personal DES window.
 
         Returns:
             window (PySimpleGUI.Window): The window object.
     """
-    # note: my des is separate as it will have additional control such as selecting data sets to display
-    # left column
+    # Note: my des is separate as it will have additional control such as selecting data sets to display,
+    # which will be added in the next version
+
+    # Left column contains chart display and title
     display_column = [
         [psg.Column(
             layout=[
@@ -110,7 +120,10 @@ def make_my_des_window():
         )]
     ]
 
-    # right column
+    # Right column contains chart controls
+    # Note: open chat button functionality will be implemented in the next version
+    # and possibly integrated into the DES window instead of a separate window
+
     control_column = [
         [psg.Column(
             layout=[
@@ -124,7 +137,7 @@ def make_my_des_window():
         )]
     ]
 
-    # full layout
+    # Full layout
     layout = [[
             psg.Column(display_column), 
             psg.Column(control_column)
@@ -142,7 +155,7 @@ def make_des_window(user):
         Returns:
             window (PySimpleGUI.Window): The window object.
     """
-    # left column
+    # Left column contains chart display and title
     display_column = [
         [psg.Column(
             layout=[
@@ -154,7 +167,7 @@ def make_des_window(user):
         )]
     ]
 
-    # right column
+    # Right column contains chart controls
     control_column = [
         [psg.Column(
             layout=[
@@ -168,7 +181,7 @@ def make_des_window(user):
         )]
     ]
 
-    # full layout
+    # Full layout
     layout = [[
             psg.Column(display_column), 
             psg.Column(control_column)
@@ -193,25 +206,57 @@ def set_theme():
     )
 
 
+def update_des_list(window, username):
+    """
+        This function updates the list of other DES screens.
+
+        Parameters:
+            window (PySimpleGUI.Window): The window object.
+            username (str): The username of the active account.
+    """
+    # Get all DES names except the user's
+    des_list = requests.get_other_names(username) 
+
+    # Placeholder text if no DES screens available
+    if len(des_list) == 0:
+        window.extend_layout(
+            window['-DES_COL-'], [[psg.Text('No DES screens available.')]]
+        )
+        
+    # Add DES buttons to the list
+    else:
+        for des in des_list:
+            window.extend_layout(
+                window['-DES_COL-'], [[psg.Button(des, 
+                key=f'-BTN_HOME_DES_{des}-', size=(15,1))]]
+            )
+
+
 def main():
     """
         This is the main function for the program. It handles the windows and display.
     """
+    # Set theme and create initial windows
     set_theme()
     window_1, des_windows = set_window_1(), []
     active_screen = 'WELCOME'
     username = None
+
+    # Main event loop
     while True:
         # Get events from all active windows
         window, event, values = psg.read_all_windows()
 
-        # Find active window and check for exit
+        # Handle any window 1 events
         if window == window_1:
+            # Close program on exit
             if event in (psg.WIN_CLOSED, '-BTN_WELCOME_EXIT-', '-BTN_HOME_EXIT-'):
                 break
 
             # Handle event
             new_active, kwargs = events.event_processor(event, values, 1)
+
+            # Create new DES window if required
             if new_active == 'MYDES':
                 des_windows.append(make_my_des_window())
                 new_active = 'HOME'
@@ -219,38 +264,34 @@ def main():
                 des_windows.append(make_des_window(kwargs['user']))
                 new_active = 'HOME'
 
-            # Once logged in, get username and update DES list
+            # Tasks on first home screen load
             if new_active == 'HOME' and username == None:
+                # Add username to home screen
                 username = kwargs['username']
-                
-                # Update DES list
-                des_list = requests.get_other_names(username)
-                if len(des_list) == 0:
-                    window_1.extend_layout(
-                        window_1['-DES_COL-'], [[psg.Text('No DES screens available.')]]
-                    )
-                else:
-                    for des in des_list:
-                        window_1.extend_layout(
-                            window_1['-DES_COL-'], [[psg.Button(des, 
-                            key=f'-BTN_HOME_DES_{des}-', size=(15,1))]]
-                        )
-
-            # Change screen
-            window_1[f'-COL_{active_screen}-'].update(visible=False)
-            active_screen = new_active
-            window_1[f'-COL_{active_screen}-'].update(visible=True)
-
-            # Add username to home screen
-            if active_screen == 'HOME':
                 window_1['-TXT_HOME_WELCOME-'].update(f'Welcome {username}!')
+                
+                # Update DES list with other DES screens
+                update_des_list(window_1, username)
+
+            # Update screen if required
+            if active_screen != new_active:
+                window_1[f'-COL_{active_screen}-'].update(visible=False)
+                active_screen = new_active
+                window_1[f'-COL_{active_screen}-'].update(visible=True)
+
+        # Handle any DES window events
         else:
+            # Identify which DES window the event came from
             for des_window in des_windows:
                 if des_window == window:
+                    # Handle exit event
                     if event in (psg.WIN_CLOSED, '-DES_EXIT-'): # to be fixed
                         des_window.close()
                         des_windows.remove(des_window)
                         break 
+                    # Event will be handled by the DES window handler
+                    # once implemented in the next version
+
     # Close windows on exit
     window_1.close()
     if des_windows:
