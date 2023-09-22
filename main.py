@@ -27,8 +27,8 @@ def set_window_1():
     layout_welcome = [
         [psg.Column(
             layout=[
-                [psg.Text('Data Scout: Data Set Explorer', font="Any 28", size=(700,1), justification='center')],
-                [psg.Text('Explore large data sets with ease', font="Any 16", pad=(0,(0,20)))],
+                [psg.Text('Data Scout: Data Set Explorer', font='Any 28', size=(700,1), justification='center')],
+                [psg.Text('Explore large data sets with ease', font='Any 16', pad=(0,(0,20)))],
                 [psg.Button('Login', key='-BTN_WELCOME_LOGIN-', size=(20,1))],
                 [psg.Button('Register', key='-BTN_WELCOME_REGISTER-', size=(20,1))],
                 [psg.Button('Exit', key='-BTN_WELCOME_EXIT-', size=(20,1))],
@@ -39,10 +39,10 @@ def set_window_1():
     layout_login = [
         [psg.Column(
             layout=[
-                [psg.Text('Data Scout: Data Set Explorer', font="Any 20", size=(700,1), justification='center')],
-                [psg.Text('Login', font="Any 18", justification='right', pad=(0,(0,20)))],
-                [psg.Text('Email', size=(8,1), justification='right'), psg.Input(key="-IN_LOGIN_EMAIL-", size=(25,1))],
-                [psg.Text('Password', size=(8,1), justification='right'), psg.Input(key="-IN_LOGIN_PASSWORD-", size=(25,1))],
+                [psg.Text('Data Scout: Data Set Explorer', font='Any 20', size=(700,1), justification='center')],
+                [psg.Text('Login', font='Any 18', justification='right', pad=(0,(0,20)))],
+                [psg.Text('Email', size=(8,1), justification='right'), psg.Input(key='-IN_LOGIN_EMAIL-', size=(25,1))],
+                [psg.Text('Password', size=(8,1), justification='right'), psg.Input(key='-IN_LOGIN_PASSWORD-', size=(25,1))],
                 [psg.Button('Login', key='-BTN_LOGIN_LOGIN-', size=(15,1), pad=(0,(20,0)))],
                 [psg.Button('Back', key='-BTN_LOGIN_BACK-', size=(15,1))],
             ],
@@ -52,11 +52,11 @@ def set_window_1():
     layout_register = [
         [psg.Column(
             layout=[
-                [psg.Text('Data Scout: Data Set Explorer', font="Any 20", size=(700,1), justification='center')],
-                [psg.Text('Register', font="Any 18", pad=(0,(0,20)))],
-                [psg.Text('Username', size=(8,1), justification='right'), psg.Input(key="-IN_REGISTER_NAME-", size=(25,1))],
-                [psg.Text('Email', size=(8,1), justification='right'), psg.Input(key="-IN_REGISTER_EMAIL-", size=(25,1))],
-                [psg.Text('Password', size=(8,1), justification='right'), psg.Input(key="-IN_REGISTER_PASSWORD-", size=(25,1))],
+                [psg.Text('Data Scout: Data Set Explorer', font='Any 20', size=(700,1), justification='center')],
+                [psg.Text('Register', font='Any 18', pad=(0,(0,20)))],
+                [psg.Text('Username', size=(8,1), justification='right'), psg.Input(key='-IN_REGISTER_NAME-', size=(25,1))],
+                [psg.Text('Email', size=(8,1), justification='right'), psg.Input(key='-IN_REGISTER_EMAIL-', size=(25,1))],
+                [psg.Text('Password', size=(8,1), justification='right'), psg.Input(key='-IN_REGISTER_PASSWORD-', size=(25,1))],
                 [psg.Button('Register', key='-BTN_REGISTER_REGISTER-', size=(15,1), pad=(0,(20,0)))],
                 [psg.Button('Back', key='-BTN_REGISTER_BACK-', size=(15,1))],
             ],
@@ -70,9 +70,9 @@ def set_window_1():
     layout_home = [
         [psg.Column(
             layout=[
-                [psg.Text('Data Scout: Data Set Explorer', font="Any 20", size=(700,1), justification='center')],
-                [psg.Text('Welcome User', font="Any 18", key='-TXT_HOME_WELCOME-', pad=(0,(0,40)))],
-                [psg.Button('My DES', key='-BTN_HOME_DES1-', size=(15,1))],
+                [psg.Text('Data Scout: Data Set Explorer', font='Any 20', size=(700,1), justification='center')],
+                [psg.Text('Welcome User', font='Any 18', key='-TXT_HOME_WELCOME-', pad=(0,(0,40)))],
+                [psg.Button('My DES', key='-BTN_HOME_MY_DES-', size=(15,1))],
                 [psg.Frame(title='Other DES', layout=des_container, key='-DES_COL-', size=(184, 140), title_color='#2D6A4F', background_color='#95D0B3')],
                 [psg.Button('Exit', key='-BTN_HOME_EXIT-', size=(15,1))]
             ],
@@ -101,8 +101,8 @@ def make_des_window():
     display_column = [
         [psg.Column(
             layout=[
-                [psg.Text('Data Explorer 1', font="Any 20", justification='center', pad=(0,0))],
-                [psg.Text('DES Title', font="Any 16", pad=(0,(0,10)))],
+                [psg.Text('My Personal DES', font='Any 20', justification='center', pad=(0,0))],
+                [psg.Text('DES Title', font='Any 16', pad=(0,(0,10)))],
                 [psg.Text('Chart goes here', pad=(0,(0,20)), size=(45,15), background_color='lightgrey')]
             ],
             element_justification='left'
@@ -114,7 +114,7 @@ def make_des_window():
         [psg.Column(
             layout=[
                 [psg.Button('Close', key='-DES_EXIT-', size=(10,1), pad=(0,(0,50)))],
-                [psg.Text('Description', font="Any 12", size=(25,5), pad=(0,(0,20)), background_color='#D0E9DD')],
+                [psg.Text('Description', font='Any 12, size=(25,5), pad=(0,(0,20)), background_color='#D0E9DD')],
                 [psg.Text('Zoom', size=(5,1)), psg.Slider(range=(1,100), default_value=1, orientation='h', key='-ZOOM-', enable_events=True)],
                 [psg.Text('Pan', size=(5,1)), psg.Slider(range=(1,100), default_value=1, orientation='h', key='-PAN-', enable_events=True)],
                 [psg.Button('Open chat', key='-CHAT-', size=(10,1), pad=((0, 50),(10,10)))]

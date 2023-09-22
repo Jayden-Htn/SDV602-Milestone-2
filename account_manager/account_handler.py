@@ -2,8 +2,9 @@
     This module contains the functions that handle the accounts.
 
     Functions:
-        check_for_account(email, password): This function checks if the account exists.
-        check_for_email(email): This function checks if the email exists.
+        verify_correct_account(email, password): This function checks if the account exists with the correct password.
+        check_for_item(item, item_type): This function checks if the item exists in the csv file (e.g. username, email).
+        get_display_name(): This function gets the display name of the account.
         add_account(name, email, password): This function adds an account to the csv file.
         get_account_names(): This function gets the names of the accounts.
 """

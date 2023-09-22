@@ -13,7 +13,7 @@ import csv
 
 # Set global variables
 global file_path 
-file_path = "./database/accounts.csv"
+file_path = './database/accounts.csv'
 
 
 # Functions
@@ -45,7 +45,7 @@ def write_csv_file(data):
         writer.writerows(data)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # check that read and write work
     data = read_csv_file()
     print(data)

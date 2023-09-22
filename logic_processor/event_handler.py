@@ -4,15 +4,14 @@
     Functions:
         get_login_details(values): This function gets the login details from the login form.
         register_screen(values): This function gets the register details from the registration form.
-        window_1_handler(event, values, active_screen): This function handles the input from the first window.
-        window_2_handler(event, values, active_screen): This function handles the input from the second window.
-        event_processor(event, values, active_screen): This function processes the events from the window and passes to specifc handler.
+        window_1_handler(event, values): This function handles the input from the first window.
+        window_2_handler(event, values): This function handles the input from the second window.
+        event_processor(event, values, window): This function processes the events from the window and passes to the specifc window handler.
 """ 
 
 
 # Import modules
 import account_manager.account_handler as accounts
-import main as ui
 
 
 # Functions
@@ -25,10 +24,11 @@ def validate_login(values):
 
         Returns:
             screen (str): The screen to go to.
+            username (dict): The username to be displayed on the next screen (if applicable).
     """
     # Get the values from the window
-    email = values["-IN_LOGIN_EMAIL-"].lower()
-    password = values["-IN_LOGIN_PASSWORD-"]
+    email = values['-IN_LOGIN_EMAIL-'].lower()
+    password = values['-IN_LOGIN_PASSWORD-']
     # Check if the account exists
     response = accounts.verify_correct_account(email, password)
     # Return the screen to go to
@@ -43,13 +43,15 @@ def register_screen(values):
 
         Parameters:
             values (dict): The values from the window.
+            
+        Returns:
+            screen (str): The screen to go to.
+            username (dict): The username to be displayed on the next screen (if applicable).
     """
-    username = values["-IN_REGISTER_NAME-"]
-    email = values["-IN_REGISTER_EMAIL-"].lower()
-    password = values["-IN_REGISTER_PASSWORD-"]
-    if accounts.check_for_item(username, 'name'):
-        return 'REGISTER'
-    if accounts.check_for_item(email, 'email'):
+    username = values['-IN_REGISTER_NAME-']
+    email = values['-IN_REGISTER_EMAIL-'].lower()
+    password = values['-IN_REGISTER_PASSWORD-']
+    if accounts.check_for_item(username, 'name') and accounts.check_for_item(email, 'email'):
         return 'REGISTER'
     accounts.add_account(username, email, password)
     return 'HOME'
@@ -62,6 +64,10 @@ def window_1_handler(event, values):
         Parameters:
             event (str): The event from the window.
             values (dict): The values from the window.
+
+        Returns:
+            screen (str): The screen to go to.
+            username (dict): Username for the next screen (if applicable).
     """
     # Back buttons
     if event in ('-BTN_LOGIN_BACK-', '-BTN_REGISTER_BACK-'):
@@ -90,7 +96,7 @@ def window_2_handler(event, values):
 
 def event_processor(event, values, window):
     """
-        This function processes the events from the window.
+        This function processes the events from the window and passes to the specifc window handler.
 
         Parameters:
             event (str): The event from the window.
