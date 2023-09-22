@@ -2,7 +2,7 @@
     Description: This file contains the functions that handle the events from GUI inputs.
 
     Functions:
-        get_login_details(values): This function gets the login details from the login form.
+        validate_login(values): This function gets the login details from the login form.
         register_screen(values): This function gets the register details from the registration form.
         window_1_handler(event, values): This function handles the input from the first window.
         window_2_handler(event, values): This function handles the input from the second window.
@@ -33,8 +33,8 @@ def validate_login(values):
     response = accounts.verify_correct_account(email, password)
     # Return the screen to go to
     if response:
-        return 'HOME'
-    return 'LOGIN'
+        return 'HOME', {'username': accounts.get_display_name()}
+    return 'LOGIN', {}
 
 
 def register_screen(values):
@@ -52,9 +52,9 @@ def register_screen(values):
     email = values['-IN_REGISTER_EMAIL-'].lower()
     password = values['-IN_REGISTER_PASSWORD-']
     if accounts.check_for_item(username, 'name') and accounts.check_for_item(email, 'email'):
-        return 'REGISTER'
+        return 'REGISTER', {}
     accounts.add_account(username, email, password)
-    return 'HOME'
+    return 'HOME', {'username': username}
 
 
 def window_1_handler(event, values):
@@ -71,23 +71,25 @@ def window_1_handler(event, values):
     """
     # Back buttons
     if event in ('-BTN_LOGIN_BACK-', '-BTN_REGISTER_BACK-'):
-        return 'WELCOME'
+        return 'WELCOME', {}
     # Welcome page
     if event == '-BTN_WELCOME_LOGIN-':
-        return 'LOGIN'
+        return 'LOGIN', {}
     elif event == '-BTN_WELCOME_REGISTER-':
-        return 'REGISTER'
+        return 'REGISTER', {}
     # Login page
     if event == '-BTN_LOGIN_LOGIN-':
         return validate_login(values)
     # Register page
     if event == '-BTN_REGISTER_REGISTER-':
-        return register_screen(values)  
+        return register_screen(values)
     # Home page
-    if event == '-BTN_HOME_DES1-':
-        return 'Create DES Window'
-    else:
-        return 'HOME'
+    if event == '-BTN_HOME_MY_DES-':
+        return 'MYDES', {}
+    des_list = [ f'-BTN_HOME_DES_{a}-' for a in accounts.get_account_names()]
+    if event in des_list:
+        return 'DES', {'user': event.split('_')[-1].split('-')[0]}
+    return 'HOME'
 
 
 def window_2_handler(event, values):

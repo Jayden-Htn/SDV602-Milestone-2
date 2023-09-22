@@ -90,13 +90,14 @@ def set_window_1():
     return psg.Window('Data Scout: Data Set Explorer', layout, size=(700, 400), finalize=True)
 
 
-def make_des_window():
+def make_my_des_window():
     """
         This function sets the layout for each DES window.
 
         Returns:
             window (PySimpleGUI.Window): The window object.
     """
+    # note: my des is separate as it will have additional control such as selecting data sets to display
     # left column
     display_column = [
         [psg.Column(
@@ -114,7 +115,51 @@ def make_des_window():
         [psg.Column(
             layout=[
                 [psg.Button('Close', key='-DES_EXIT-', size=(10,1), pad=(0,(0,50)))],
-                [psg.Text('Description', font='Any 12, size=(25,5), pad=(0,(0,20)), background_color='#D0E9DD')],
+                [psg.Text('Description', font='Any 12', size=(25,5), pad=(0,(0,20)), background_color='#D0E9DD')],
+                [psg.Text('Zoom', size=(5,1)), psg.Slider(range=(1,100), default_value=1, orientation='h', key='-ZOOM-', enable_events=True)],
+                [psg.Text('Pan', size=(5,1)), psg.Slider(range=(1,100), default_value=1, orientation='h', key='-PAN-', enable_events=True)],
+                [psg.Button('Open chat', key='-CHAT-', size=(10,1), pad=((0, 50),(10,10)))]
+            ],
+            element_justification='right'
+        )]
+    ]
+
+    # full layout
+    layout = [[
+            psg.Column(display_column), 
+            psg.Column(control_column)
+        ]]
+    return psg.Window('Data Explorer 1', layout, size=(700, 400), finalize=True)
+
+
+def make_des_window(user):
+    """
+        This function sets the layout for each DES window.
+
+        Parameters:
+            user (str): The user to display the DES for.
+
+        Returns:
+            window (PySimpleGUI.Window): The window object.
+    """
+    # left column
+    display_column = [
+        [psg.Column(
+            layout=[
+                [psg.Text(f'{user}\'s DES', font='Any 20', justification='center', pad=(0,0))],
+                [psg.Text('DES Title', font='Any 16', pad=(0,(0,10)))],
+                [psg.Text('Chart goes here', pad=(0,(0,20)), size=(45,15), background_color='lightgrey')]
+            ],
+            element_justification='left'
+        )]
+    ]
+
+    # right column
+    control_column = [
+        [psg.Column(
+            layout=[
+                [psg.Button('Close', key='-DES_EXIT-', size=(10,1), pad=(0,(0,50)))],
+                [psg.Text('Description', font='Any 12', size=(25,5), pad=(0,(0,20)), background_color='#D0E9DD')],
                 [psg.Text('Zoom', size=(5,1)), psg.Slider(range=(1,100), default_value=1, orientation='h', key='-ZOOM-', enable_events=True)],
                 [psg.Text('Pan', size=(5,1)), psg.Slider(range=(1,100), default_value=1, orientation='h', key='-PAN-', enable_events=True)],
                 [psg.Button('Open chat', key='-CHAT-', size=(10,1), pad=((0, 50),(10,10)))]
@@ -159,36 +204,43 @@ def main():
     while True:
         # Get events from all active windows
         window, event, values = psg.read_all_windows()
+
         # Find active window and check for exit
         if window == window_1:
             if event in (psg.WIN_CLOSED, '-BTN_WELCOME_EXIT-', '-BTN_HOME_EXIT-'):
                 break
+
             # Handle event
-            new_active = events.event_processor(event, values, 1)
-            if new_active == 'Create DES Window':
-                des_windows.append(make_des_window())
+            new_active, kwargs = events.event_processor(event, values, 1)
+            if new_active == 'MYDES':
+                des_windows.append(make_my_des_window())
                 new_active = 'HOME'
-            # Once logged in, get username
+            elif new_active == 'DES':
+                des_windows.append(make_des_window(kwargs['user']))
+                new_active = 'HOME'
+
+            # Once logged in, get username and update DES list
             if new_active == 'HOME' and username == None:
-                username = requests.get_display_name()
-                # Add DES buttons to home screen
+                username = kwargs['username']
+                
+                # Update DES list
                 des_list = requests.get_other_names(username)
-                print(des_list)
                 if len(des_list) == 0:
                     window_1.extend_layout(
                         window_1['-DES_COL-'], [[psg.Text('No DES screens available.')]]
                     )
                 else:
                     for des in des_list:
-                        print(des)
                         window_1.extend_layout(
                             window_1['-DES_COL-'], [[psg.Button(des, 
                             key=f'-BTN_HOME_DES_{des}-', size=(15,1))]]
                         )
+
             # Change screen
             window_1[f'-COL_{active_screen}-'].update(visible=False)
             active_screen = new_active
             window_1[f'-COL_{active_screen}-'].update(visible=True)
+
             # Add username to home screen
             if active_screen == 'HOME':
                 window_1['-TXT_HOME_WELCOME-'].update(f'Welcome {username}!')
