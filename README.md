@@ -2,15 +2,18 @@
 
 Python data set explorer for NMIT SDV602 milestone 2 2023. Please read this document before setting up and using the program. 
 
+The design documentation is located in the Microsoft Word document named 'JaydenHoughton_SDV602_Milestone_2.docx'.
+
 
 ## Installation
 
 How to run the game:
 
 1. Download the repository and open in VS Code.
-2. Run `pip install -r requirements.txt` in the terminal to install dependancies.
+2. Run `python -m venv venv` to install a virtual environment if you do not already have one set up.
 3. Run `source venv/Scripts/activate` in the terminal to start the virtual environment.
-3. Run the main.py script.
+4. Run `pip install -r requirements.txt` in the terminal to install dependancies.
+5. Run the main.py script.
 
 
 ## Dependancies
